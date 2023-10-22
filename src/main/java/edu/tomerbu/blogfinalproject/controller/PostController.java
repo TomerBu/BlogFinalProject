@@ -1,6 +1,7 @@
 package edu.tomerbu.blogfinalproject.controller;
 
 import edu.tomerbu.blogfinalproject.dto.CreatePostDto;
+import edu.tomerbu.blogfinalproject.dto.DeletePostResponseDto;
 import edu.tomerbu.blogfinalproject.dto.ResponsePostDto;
 import edu.tomerbu.blogfinalproject.entity.Post;
 import edu.tomerbu.blogfinalproject.service.PostService;
@@ -25,14 +26,25 @@ public class PostController {
     private final PostService postService;
 
     @GetMapping
-    public ResponseEntity<Collection<ResponsePostDto>> getAll(){
+    public ResponseEntity<Collection<ResponsePostDto>> getAll() {
         var res = postService.getAll();
+        return ResponseEntity.ok(res);
+    }
+
+    ///http://localhost:8080/api/v1/posts/page?pageSize=3&pageNo=1&sortBy=title&sortDir=desc
+    @GetMapping("/page")
+    public ResponseEntity<Collection<ResponsePostDto>> getPage(
+            @RequestParam(defaultValue = "10", required = false) int pageSize,
+            @RequestParam(defaultValue = "0", required = false) int pageNo,
+            @RequestParam(defaultValue = "id", required = false) String sortBy,
+            @RequestParam(defaultValue = "asc", required = false) String sortDir) {
+        var res = postService.getPage(pageNo, pageSize);
         return ResponseEntity.ok(res);
     }
 
     //add a post:
     @PostMapping
-    public ResponseEntity<ResponsePostDto> addPost(@RequestBody @Valid CreatePostDto dto, UriComponentsBuilder uriBuilder){
+    public ResponseEntity<ResponsePostDto> addPost(@RequestBody @Valid CreatePostDto dto, UriComponentsBuilder uriBuilder) {
         //1) tell the service to save the post
         var saved = postService.addPost(dto);
 
@@ -44,8 +56,21 @@ public class PostController {
 
     // /api/v1/posts/5
     @GetMapping("/{id}")
-    public ResponseEntity<ResponsePostDto> getPostById(@PathVariable @Valid @NotNull Long id ){
+    public ResponseEntity<ResponsePostDto> getPostById(@PathVariable @Valid @NotNull Long id) {
         return ResponseEntity.ok(postService.getPostById(id));
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ResponsePostDto> updatePostById(
+            @PathVariable @Valid @NotNull Long id,
+            @RequestBody @Valid CreatePostDto dto) {
+        return ResponseEntity.ok(postService.updatePostById(id, dto));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<DeletePostResponseDto> deletePostById(@PathVariable @Valid @NotNull Long id) {
+        return ResponseEntity.ok(postService.deletePostById(id));
+    }
+
 
 }
