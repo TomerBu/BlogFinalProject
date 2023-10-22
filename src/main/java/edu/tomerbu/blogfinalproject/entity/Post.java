@@ -1,5 +1,6 @@
 package edu.tomerbu.blogfinalproject.entity;
 
+import edu.tomerbu.blogfinalproject.dto.CreatePostDto;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
@@ -31,4 +32,11 @@ public class Post {
     private String description;
     @NotNull
     private String content;
+
+    public Post(Long id, CreatePostDto dto) {
+        this.id = id;
+        this.title = dto.getTitle();
+        this.description = dto.getDescription();
+        this.content = dto.getContent();
+    }
 }

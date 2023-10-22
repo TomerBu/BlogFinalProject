@@ -17,5 +17,9 @@ public class ResourceNotFoundException extends RuntimeException{
         this.name = name;
         this.value = value;
     }
+
+    public ResourceNotFoundException(String resourceName, String name, long value) {
+      this(resourceName, name, String.valueOf(value));
+    }
 }
 //Runtime exception can be avoided by smarter programming!

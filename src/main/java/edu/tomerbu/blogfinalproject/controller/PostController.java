@@ -5,6 +5,7 @@ import edu.tomerbu.blogfinalproject.dto.ResponsePostDto;
 import edu.tomerbu.blogfinalproject.entity.Post;
 import edu.tomerbu.blogfinalproject.service.PostService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
@@ -39,6 +40,12 @@ public class PostController {
         //2) response uri:
         var uri = uriBuilder.path("/api/v1/posts/{id}").buildAndExpand(saved.getId());
         return ResponseEntity.created(uri.toUri()).body(saved);
+    }
+
+    // /api/v1/posts/5
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponsePostDto> getPostById(@PathVariable @Valid @NotNull Long id ){
+        return ResponseEntity.ok(postService.getPostById(id));
     }
 
 }

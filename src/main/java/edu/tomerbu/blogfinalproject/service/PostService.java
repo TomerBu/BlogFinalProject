@@ -2,8 +2,6 @@ package edu.tomerbu.blogfinalproject.service;
 
 import edu.tomerbu.blogfinalproject.dto.CreatePostDto;
 import edu.tomerbu.blogfinalproject.dto.ResponsePostDto;
-
-import java.util.ArrayList;
 import java.util.Collection;
 
 public interface PostService {
@@ -14,4 +12,10 @@ public interface PostService {
     ResponsePostDto addPost(CreatePostDto dto);
 
     Collection<ResponsePostDto> getAll();
+
+    //get post by id:
+    ResponsePostDto getPostById(long id);
+
+    ResponsePostDto updatePostById(long id, CreatePostDto dto);
+
 }
